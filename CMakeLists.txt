@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22.1)
 
-project(memscanner)
+project(mems)
 
 # Add the path to the NDK includes
 # (Note: This isn't strictly necessary when using the Android toolchain file from the NDK, but it's added for clarity)
