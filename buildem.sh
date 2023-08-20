@@ -2,7 +2,7 @@
 
 # Function to cleanup and exit emulator
 cleanup() {
-    echo "Cleaning up and exiting emulator..."
+    echo "[Cleanup] Cleaning up and exiting emulator..."
     adb emu kill
     exit
 }
@@ -10,32 +10,65 @@ cleanup() {
 # Set trap to EXIT sig and call the cleanup function
 trap cleanup EXIT
 
-# Build the mem scanner.
-./build.sh
+build_mems()
+{
+    # Build the mems.
+    ./build.sh
 
-# Go into the build folder.
-cd build
+    echo "[CMake] mems cpp source has been built."
+}
 
-# Boot up the emulator
-emulator -avd testdevice -gpu host -writable-system -no-snapshot-load -dns-server 8.8.8.8 &> /dev/null &
+build_frontend()
+{
+    cd frontend
 
-# Wait till it is booted up.
-adb wait-for-device
+    npm run build
 
-# Open webserver and socket ports up.
-adb forward tcp:8000 tcp:8000
+    cd ..
 
-# Create the mem-scanner directory on the emulator.
-adb shell "mkdir -p /data/local/tmp/mem-scanner"
+    echo "[React] Frontend built."
+}
 
-# Push the scanner executable and the /public folder to the mem-scanner directory on the emulator.
-adb push ./scanner /data/local/tmp/mem-scanner/
-adb push public /data/local/tmp/mem-scanner/
+move_files()
+{
+    # Go into the build folder.
+    cd build
 
-echo "Running the ADB shell script."
+    # Create the mems directory on the emulator.
+    adb shell "mkdir -p /data/local/tmp/mems"
 
-# Navigate to /data/local/tmp/mem-scanner, make the scanner executable, and then run it.
-# If you want to keep the adb shell session open after the scanner runs, you can do:
-echo "cd /data/local/tmp/mem-scanner && chmod +x scanner && ./scanner"
+    # Push the scanner executable and the /build folder to the mems directory on the emulator.
+    adb push ./scanner /data/local/tmp/mems/
+    adb push ../frontend/build /data/local/tmp/mems/
 
-adb shell
+    echo "[ADB] Files pushed into AVD."
+}
+
+prep_emulator()
+{
+    # Boot up the emulator
+    emulator -avd testdevice -gpu host -writable-system -no-snapshot-load -dns-server 8.8.8.8 &> /dev/null &
+
+    # Wait till it is booted up.
+    adb wait-for-device
+
+    # Open webserver and socket ports up.
+    adb forward tcp:8000 tcp:8000
+
+    move_files
+
+    # Navigate to /data/local/tmp/mems, make the scanner executable, and then run it.
+    # If you want to keep the adb shell session open after the scanner runs, you can do:
+    echo "cd /data/local/tmp/mems && chmod +x scanner && ./scanner"
+
+    echo "[ADB] Emulator booting up, running adb shell."
+
+    adb shell
+}
+
+build_mems
+build_frontend
+prep_emulator
+
+
+

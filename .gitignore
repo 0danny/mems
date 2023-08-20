@@ -4,23 +4,23 @@
 /build
 
 # dependencies
-/public/node_modules
-/public/.pnp
-/public/.pnp.js
+/frontend/node_modules
+/frontend/.pnp
+/frontend/.pnp.js
 
 # testing
-/public/coverage
+/frontend/coverage
 
 # production
-/public/build
+/frontend/build
 
 # misc
-/public/.DS_Store
-/public/.env.local
-/public/.env.development.local
-/public/.env.test.local
-/public/.env.production.local
+/frontend/.DS_Store
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
 
-/public/npm-debug.log*
-/public/yarn-debug.log*
-/public/yarn-error.log*
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*

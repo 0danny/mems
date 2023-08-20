@@ -7,7 +7,7 @@
 class scanner {
 private:
   const char *s_listen_on = "ws://localhost:8000";
-  const char *s_web_root = "./public";
+  const char *s_web_root = "./build";
 
   struct mg_mgr mgr; // Event manager
 

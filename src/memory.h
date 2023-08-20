@@ -15,7 +15,7 @@ public:
     bool readable; // To store whether the region is readable
   };
 
-  memory(); // default buffer size is set to 1024 bytes
+  memory();
 
   std::vector<memoryRegion> getMemoryRegions(pid_t pid);
 

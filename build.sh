@@ -24,8 +24,5 @@ cmake -DCMAKE_TOOLCHAIN_FILE=$NDK_ROOT/build/cmake/android.toolchain.cmake \
       ..
 make
 
-# Right now the /public folder is just getting copied in.
-cp -r ../public ./
-
 # Print out completion message
 echo "Build completed!"
