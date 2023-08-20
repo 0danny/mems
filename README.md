@@ -1,4 +1,6 @@
-# Android Memory Scanner (Web)
+# Mems
+
+Mems is an android based memory scanner & editor that is operated from a locally hosted web page.
 
 ## AVD Notes
 
