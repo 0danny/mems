@@ -1,0 +1,5 @@
+.process-list {
+  overflow-y: auto;
+  height: 40vh;
+  word-break: break-all;
+}

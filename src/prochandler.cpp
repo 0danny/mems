@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+// TODO: Comment this whole func out and make it cleaner.
+// They do NOT make this shit easy at all
 std::vector<prochandler::process> prochandler::getRunningProcesses()
 {
   std::vector<process> processes;
@@ -20,16 +22,35 @@ std::vector<prochandler::process> prochandler::getRunningProcesses()
       int pid = atoi(entry->d_name);
       if (pid > 0) {
         std::string cmdline_file = "/proc/" + std::to_string(pid) + "/cmdline";
-
         std::ifstream file(cmdline_file.c_str());
+        std::string name;
+
         if (file) {
-          std::string name;
-          std::getline(file, name);
-          if (name == "") {
-            name = "Unknown";
-          }
-          processes.push_back({pid, name});
+          std::getline(file, name, '\0'); // read until the first '\0'
+          file.close();
         }
+
+        // If we didn't get a name from cmdline, try /proc/[pid]/status
+        if (name.empty()) {
+          std::string status_file = "/proc/" + std::to_string(pid) + "/status";
+          std::ifstream statusFile(status_file.c_str());
+          if (statusFile) {
+            std::string line;
+            while (std::getline(statusFile, line)) {
+              if (line.rfind("Name:", 0) == 0) { // if line starts with "Name:"
+                name = line.substr(6);           // skip "Name:\t"
+                break;
+              }
+            }
+            statusFile.close();
+          }
+        }
+
+        if (name.empty()) {
+          name = "Unknown";
+        }
+
+        processes.push_back({pid, name});
       }
     }
     closedir(dir);
