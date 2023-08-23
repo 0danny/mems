@@ -24,11 +24,15 @@ const notifySubscribers = (type, data) => {
 }
 
 const prepareData = (socket) => {
+  //Have the respective components take care of calling the
+  //type that they need. This works for now.
   socket.send(JSON.stringify({ type: "processes" }))
+  socket.send(JSON.stringify({ type: "device-info" }))
 }
 
 export const SocketProvider = ({ children }) => {
   const [error, setError] = useState(null)
+  const [isConnected, setIsConnected] = useState(false)
 
   useEffect(() => {
     var server_url = `ws://${window.location.host}/websocket`
@@ -39,7 +43,7 @@ export const SocketProvider = ({ children }) => {
 
     socket.onopen = (event) => {
       console.log("Connected to websocket server.")
-
+      setIsConnected(true)
       prepareData(socket)
     }
 
@@ -58,7 +62,7 @@ export const SocketProvider = ({ children }) => {
 
     socket.onclose = (event) => {
       console.log("Closing WS connection.")
-
+      setIsConnected(false)
       if (!event.wasClean) {
         setError("Connection died unexpectedly")
       }
@@ -71,7 +75,7 @@ export const SocketProvider = ({ children }) => {
 
   return (
     <SocketContext.Provider
-      value={{ error, registerSubscriber, unregisterSubscriber }}>
+      value={{ error, isConnected, registerSubscriber, unregisterSubscriber }}>
       {children}
     </SocketContext.Provider>
   )

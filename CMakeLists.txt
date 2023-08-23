@@ -17,6 +17,7 @@ set(SOURCES
     src/scanner.cpp
     src/memory.cpp
     src/prochandler.cpp
+    src/syshandler.cpp
     ${CMAKE_HOME_DIRECTORY}/src/includes/mongoose/mongoose.c
 )
 

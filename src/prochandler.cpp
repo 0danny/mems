@@ -11,8 +11,7 @@
 
 // TODO: Comment this whole func out and make it cleaner.
 // They do NOT make this shit easy at all
-std::vector<prochandler::process> prochandler::getRunningProcesses()
-{
+std::vector<prochandler::process> prochandler::getRunningProcesses() {
   std::vector<process> processes;
 
   DIR *dir = opendir("/proc");
@@ -21,36 +20,10 @@ std::vector<prochandler::process> prochandler::getRunningProcesses()
     while ((entry = readdir(dir)) != NULL) {
       int pid = atoi(entry->d_name);
       if (pid > 0) {
-        std::string cmdline_file = "/proc/" + std::to_string(pid) + "/cmdline";
-        std::ifstream file(cmdline_file.c_str());
-        std::string name;
 
-        if (file) {
-          std::getline(file, name, '\0'); // read until the first '\0'
-          file.close();
-        }
+        process fetchCmd = fetchProcessInfo("cmdline", pid);
 
-        // If we didn't get a name from cmdline, try /proc/[pid]/status
-        if (name.empty()) {
-          std::string status_file = "/proc/" + std::to_string(pid) + "/status";
-          std::ifstream statusFile(status_file.c_str());
-          if (statusFile) {
-            std::string line;
-            while (std::getline(statusFile, line)) {
-              if (line.rfind("Name:", 0) == 0) { // if line starts with "Name:"
-                name = line.substr(6);           // skip "Name:\t"
-                break;
-              }
-            }
-            statusFile.close();
-          }
-        }
-
-        if (name.empty()) {
-          name = "Unknown";
-        }
-
-        processes.push_back({pid, name});
+        processes.push_back(fetchCmd.hasName() ? fetchCmd : fetchProcessInfo("status", pid));
       }
     }
     closedir(dir);
@@ -59,11 +32,36 @@ std::vector<prochandler::process> prochandler::getRunningProcesses()
   return processes;
 }
 
-nlohmann::json prochandler::toJsonArray(const std::vector<prochandler::process> &processes)
-{
+// If cmdline doesn't work, we attempt to use /proc/<pid>/status.
+prochandler::process prochandler::fetchProcessInfo(std::string identifier, const int pid) {
+  std::string infoFilePath = "/proc/" + std::to_string(pid) + "/" + identifier;
+  std::ifstream infoFile(infoFilePath.c_str());
+  std::string name = "";
+
+  if (infoFile) {
+    if (identifier == "cmdline") {
+      std::getline(infoFile, name, '\0');
+
+    } else if (identifier == "status") {
+      std::string line;
+      while (std::getline(infoFile, line)) {
+        if (line.rfind("Name:", 0) == 0) {
+          name = line.substr(6);
+          break;
+        }
+      }
+    }
+  }
+
+  infoFile.close();
+
+  return {pid, name};
+}
+
+nlohmann::json prochandler::toJsonArray(const std::vector<prochandler::process> &processes) {
   nlohmann::json j = nlohmann::json::array();
   for (const auto &process : processes) {
-    nlohmann::json jObject = process.to_json();
+    nlohmann::json jObject = process.toJson();
 
     j.push_back(jObject);
   }

@@ -1,26 +1,24 @@
 #include "scanner.h"
 #include "logger.h"
 #include "prochandler.h"
+#include "syshandler.h"
 #include <functional>
 #include <iostream>
 #include <map>
 #include <nlohmann/json.hpp>
 
-scanner::scanner()
-{
+scanner::scanner() {
   mg_mgr_init(&mgr); // Initialise event manager
   logger::log("Starting WS listener on - ", s_listen_on);
   mg_http_listen(&mgr, s_listen_on, scanner::eventHandler, this); // Create HTTP listener
 }
 
-scanner::~scanner()
-{
+scanner::~scanner() {
   logger::log("Deconstructing scanner.");
   mg_mgr_free(&mgr);
 }
 
-void scanner::run()
-{
+void scanner::run() {
   // Register event handlers
   linkHandlers();
 
@@ -29,13 +27,14 @@ void scanner::run()
   }
 }
 
-void scanner::linkHandlers()
-{
+void scanner::linkHandlers() {
   registerHandler("processes", [this](nlohmann::json j, mg_connection *c) {
     // Handle the specific message here
     logger::log("Handling message of type {processes} from ", c->id);
 
     std::vector<prochandler::process> processes = procHandler.getRunningProcesses();
+
+    logger::log("Amount of processes: ", processes.size());
 
     nlohmann::json message = {
         {"type", "processes"},
@@ -45,15 +44,26 @@ void scanner::linkHandlers()
 
     mg_ws_send(c, serialized_message.c_str(), serialized_message.size(), WEBSOCKET_OP_TEXT);
   });
+
+  registerHandler("device-info", [this](nlohmann::json j, mg_connection *c) {
+    // Just some place holder stuff until I figure out what I want to put there.
+
+    nlohmann::json message = {
+        {"type", "device-info"},
+        {"data", {{"deviceName", syshandler::getDeviceName()}, {"user", syshandler::getUser()}}}};
+
+    std::string serialized_message = message.dump();
+
+    mg_ws_send(c, serialized_message.c_str(), serialized_message.size(), WEBSOCKET_OP_TEXT);
+  });
 }
 
-void scanner::registerHandler(const std::string &messageType, const std::function<void(nlohmann::json, struct mg_connection *c)> &handler)
-{
+void scanner::registerHandler(const std::string &messageType, const std::function<void(nlohmann::json, struct mg_connection *c)> &handler) {
   messageHandlers[messageType] = handler;
 }
 
-void scanner::eventHandler(struct mg_connection *c, int ev, void *ev_data, void *fn_data)
-{
+void scanner::eventHandler(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
+
   if (ev == MG_EV_OPEN) {
     // c->is_hexdumping = 1;
   } else if (ev == MG_EV_HTTP_MSG) {
@@ -72,19 +82,19 @@ void scanner::eventHandler(struct mg_connection *c, int ev, void *ev_data, void 
     /* Websocket JSON frame looks like:
       {"type"}
     */
-
     struct mg_ws_message *wm = (struct mg_ws_message *)ev_data;
+
+    std::string messageData(wm->data.ptr, wm->data.len); // Convert to string using length
 
     scanner *scanRef = ((scanner *)fn_data);
 
     try {
-      nlohmann::json j = nlohmann::json::parse(wm->data.ptr);
+      nlohmann::json j = nlohmann::json::parse(messageData);
 
       if (j.contains("type")) {
         std::string type = j["type"];
 
         // Handle the type value as needed.
-        logger::log("Received message with type (forwarding): ", type);
 
         // Route message to handler.
         if (scanRef->messageHandlers.count(type)) {
@@ -98,8 +108,7 @@ void scanner::eventHandler(struct mg_connection *c, int ev, void *ev_data, void 
   (void)fn_data;
 }
 
-int main(void)
-{
+int main(void) {
   scanner server;
 
   server.run();

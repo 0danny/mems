@@ -5,28 +5,28 @@
 
 class prochandler {
 
-private:
-  // Add other private members as necessary.
-
 public:
   class process {
+
   public:
     int id;
     std::string name;
-    // Other members...
 
-    // Convert Process to JSON representation
-    nlohmann::json to_json() const
-    {
+    nlohmann::json toJson() const {
       return {
           {"id", id},
-          {"name", name.c_str()}
-          // Other members...
-      };
+          {"name", name.c_str()}};
+    }
+
+    bool hasName() {
+      return !name.empty();
     }
   };
 
   std::vector<process> getRunningProcesses();
 
   nlohmann::json toJsonArray(const std::vector<process> &processes);
+
+  process fetchProcessInfo(std::string identifier, const int pid);
+
 };

@@ -2,6 +2,7 @@
 
 #include "prochandler.h"
 #include <mongoose/mongoose.h>
+#include <mutex>
 #include <nlohmann/json.hpp>
 
 class scanner {

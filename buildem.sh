@@ -47,7 +47,7 @@ move_files()
 prep_emulator()
 {
     # Boot up the emulator
-    emulator -avd testdevice -gpu host -writable-system -no-snapshot-load -dns-server 8.8.8.8 &> /dev/null &
+    emulator -avd testdevice -no-audio -gpu host -writable-system -no-snapshot-load -dns-server 8.8.8.8 &> /dev/null &
 
     # Wait till it is booted up.
     adb wait-for-device

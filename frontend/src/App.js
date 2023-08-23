@@ -5,6 +5,10 @@ import "./main.scss"
 
 import Content from "./components/Content"
 import NavigationBar from "./components/NavigationBar"
+import DeviceStats from "./components/DeviceStats"
+
+import { SocketProvider } from "./socket/SocketHandler"
+import { ProcessProvider } from "./components/cards/ProcHandler"
 
 const Container = (props) => {
   return <div className="d-flex flex-column h-100 w-100">{props.children}</div>
@@ -12,10 +16,21 @@ const Container = (props) => {
 
 const App = () => {
   return (
-    <Container>
-      <NavigationBar></NavigationBar>
-      <Content></Content>
-    </Container>
+    <Providers>
+      <Container>
+        <NavigationBar />
+        <Content />
+        <DeviceStats />
+      </Container>
+    </Providers>
+  )
+}
+
+const Providers = (props) => {
+  return (
+    <ProcessProvider>
+      <SocketProvider>{props.children}</SocketProvider>
+    </ProcessProvider>
   )
 }
 

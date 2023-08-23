@@ -1,9 +1,10 @@
 import "./NavigationBar.css"
+import DeviceStats from "./DeviceStats"
 
 const NavigationBar = (props) => {
   return (
     <div className="navigation-bar bg-primary p-1 d-flex flex-row align-items-center justify-content-center">
-      <Logo></Logo>
+      <Logo />
     </div>
   )
 }
