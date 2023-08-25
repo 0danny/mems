@@ -2,6 +2,15 @@
 
 Mems is an android based memory scanner & editor that is operated from a locally hosted web page.
 
+## Current Progress
+
+Mems is in very early stages, this is what the frontend currently looks like:
+<img width="1721" alt="image" src="https://github.com/0danny/mems/assets/14921414/bfaed99c-14ac-4958-97fb-dba3e172175f">
+
+In terms of functionality it is able to pull a process list off the device as well as some other information.
+
+Memory scanning functionality is available on the server end for scanning all regions for integer types, however it has not been implemented on the frontend yet.
+
 ## Architecture/Plan
 
 This application runs on Android devices, if you have super user access and can copy the server files onto a device. Then all thats left is to navgiate to port 8000 on the devices IP address.
@@ -45,16 +54,6 @@ If for some reason you want to build the project, there is no stream lined way a
 This entire process is executed by my **buildem.sh** script the root directory. You can try it for yourself, however it may need some modifications if you aren't using an emulator.
 
 **Note**: This process will be simplified in the future.
-
-## Current Progress
-
-Mems is in very early stages, this is what the frontend currently looks like:
-<img width="1721" alt="image" src="https://github.com/0danny/mems/assets/14921414/bfaed99c-14ac-4958-97fb-dba3e172175f">
-
-In terms of functionality it is able to pull a process list off the device as well as some other information.
-
-Memory scanning functionality is available on the server end for scanning all regions for integer types, however it has not been implemented on the frontend yet.
-
 
 ## AVD Notes
 
