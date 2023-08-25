@@ -49,7 +49,7 @@ If for some reason you want to build the project, there is no stream lined way a
 5. Push the scanner executable and entire **build** folder from within **frontend**, into the **mems** folder we just created.
 6. Give the scanner permissions to be executable **"chmod +x scanner"**.
 7. Run mems **"./scanner"**
-8. If all goes well, mems should be accessible via **"http://<your device ip>:8000"** or using the emulator **"http://localhost:8000"**.
+8. If all goes well, mems should be accessible via **"http://\<your device ip>:8000"** or using the emulator **"http://localhost:8000"**.
 
 This entire process is executed by my **buildem.sh** script the root directory. You can try it for yourself, however it may need some modifications if you aren't using an emulator.
 
