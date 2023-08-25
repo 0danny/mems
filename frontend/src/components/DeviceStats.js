@@ -10,6 +10,7 @@ const DeviceStats = () => {
   const [deviceInfo, setDeviceInfo] = useState({
     deviceName: "Unknown",
     user: "Unknown",
+    version: "Unknown",
   })
 
   useEffect(() => {
@@ -29,6 +30,9 @@ const DeviceStats = () => {
           isConnected ? "text-success" : "text-danger"
         }`}></i>
       <span>Socket Status</span>
+      <span>
+        Mems Version: <b>{deviceInfo.version}</b>
+      </span>
       <span>
         Device Name: <b>{deviceInfo.deviceName}</b>
       </span>

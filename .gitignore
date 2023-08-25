@@ -25,3 +25,5 @@
 /frontend/yarn-debug.log*
 /frontend/yarn-error.log*
 frontend/src/.DS_Store
+
+/testing

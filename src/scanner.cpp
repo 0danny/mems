@@ -50,7 +50,7 @@ void scanner::linkHandlers() {
 
     nlohmann::json message = {
         {"type", "device-info"},
-        {"data", {{"deviceName", syshandler::getDeviceName()}, {"user", syshandler::getUser()}}}};
+        {"data", {{"deviceName", syshandler::getDeviceName()}, {"user", syshandler::getUser()}, {"version", version}}}};
 
     std::string serialized_message = message.dump();
 

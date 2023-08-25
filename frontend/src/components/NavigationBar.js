@@ -5,6 +5,7 @@ const NavigationBar = (props) => {
   return (
     <div className="navigation-bar bg-primary p-1 d-flex flex-row align-items-center justify-content-center">
       <Logo />
+      <Credits />
     </div>
   )
 }
@@ -20,6 +21,17 @@ const Logo = () => {
         <span>Android web-based memory tool.</span>
       </div>
     </>
+  )
+}
+
+const Credits = () => {
+  return (
+    <div className="device-stats-credits d-flex flex-row align-items-center">
+      <a
+        className="bi bi-github fs-2"
+        href="https://github.com/0danny/mems"></a>
+      <span className="ms-2">github.com/0danny/mems</span>
+    </div>
   )
 }
 

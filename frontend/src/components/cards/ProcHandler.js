@@ -40,21 +40,22 @@ const ProcHandler = () => {
   return (
     <div className="card border-primary h-100" style={{ maxWidth: "30rem" }}>
       <div className="card-header">Process Handler</div>
-      <div className="card-body ">
-        <p className="card-text">
-          Below all of the processes on the device are displayed.
-        </p>
-        <div className="process-list list-group">
-          {processes
-            .sort((a, b) => b.id - a.id) //Sort by highest PID first.
-            .map((proc) => (
-              <Process
-                proc_id={proc.id}
-                name={proc.name}
-                onClick={() => handleProcessClick(proc.id, proc.name)}
-              />
-            ))}
-        </div>
+      <span className="p-3">
+        Below all of the processes on the device are displayed.
+        <br />
+        <b>{processes.length}</b> processes have been fetched from the device.
+      </span>
+
+      <div className="process-list list-group mb-1">
+        {processes
+          .sort((a, b) => b.id - a.id) //Sort by highest PID first.
+          .map((proc) => (
+            <Process
+              proc_id={proc.id}
+              name={proc.name}
+              onClick={() => handleProcessClick(proc.id, proc.name)}
+            />
+          ))}
       </div>
     </div>
   )
@@ -63,7 +64,6 @@ const ProcHandler = () => {
 const Process = ({ proc_id, name, onClick }) => {
   return (
     <a
-      href="#"
       className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
       onClick={onClick}>
       {name}

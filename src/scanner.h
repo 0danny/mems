@@ -4,11 +4,14 @@
 #include <mongoose/mongoose.h>
 #include <mutex>
 #include <nlohmann/json.hpp>
+#include <string>
 
 class scanner {
 private:
   const char *s_listen_on = "ws://localhost:8000";
   const char *s_web_root = "./build";
+
+  const std::string version = "1.0.0";
 
   struct mg_mgr mgr; // Event manager
 

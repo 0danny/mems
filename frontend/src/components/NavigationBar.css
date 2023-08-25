@@ -1,3 +1,12 @@
 .device-stats span {
   margin-right: 20px;
 }
+
+.device-stats-credits {
+  position: absolute;
+  left: 20px;
+}
+
+.navigation-bar {
+  position: relative;
+}

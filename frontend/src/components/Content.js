@@ -3,7 +3,7 @@ import MemViewer from "./cards/MemViewer"
 
 const Content = (props) => {
   return (
-    <div className="bg-body flex-grow-1 d-flex justify-content-center align-items-center p-4">
+    <div className="content bg-body flex-grow-1 d-flex p-4">
       <MemViewer></MemViewer>
 
       <ProcHandler></ProcHandler>

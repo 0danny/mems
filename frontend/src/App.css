@@ -4,6 +4,11 @@ html {
   height: 100%;
 }
 
-.bg-indigo {
-  background-color: #702cf5 !important;
+.content {
+  min-height: 0px;
+}
+
+thead tr th {
+  position: sticky;
+  top: 0;
 }
