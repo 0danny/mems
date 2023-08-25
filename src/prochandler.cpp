@@ -9,8 +9,6 @@
 #include <string>
 #include <vector>
 
-// TODO: Comment this whole func out and make it cleaner.
-// They do NOT make this shit easy at all
 std::vector<prochandler::process> prochandler::getRunningProcesses() {
   std::vector<process> processes;
 
