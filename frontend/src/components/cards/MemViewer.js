@@ -1,11 +1,10 @@
 const MemViewer = () => {
   return (
-    <div className="card border-primary me-3" style={{ flexGrow: "1" }}>
-      <div className="card-header">Memory Viewer</div>
+    <>
       <Controls />
 
       <Results />
-    </div>
+    </>
   )
 }
 
@@ -42,10 +41,8 @@ const Controls = () => {
 }
 
 const Results = () => {
-  //The reason the flexgrow and overflow is set manually, is because for some reason when
-  //I do it with bootstrap it just doesn't work?
   return (
-    <div style={{ flexGrow: "1", overflow: "auto" }} className="rounded">
+    <div className="overflow-auto" style={{ height: "100px" }}>
       <table className="table table-striped table-hover border-top">
         <thead className="bg-secondary-subtle">
           <tr>
@@ -56,6 +53,102 @@ const Results = () => {
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>0x0001</td>
+            <td>0xA1</td>
+            <td>Some Value</td>
+          </tr>
           <tr>
             <th scope="row">1</th>
             <td>0x0001</td>
