@@ -20,7 +20,6 @@ const App = () => {
       <Container>
         <NavigationBar />
         <Content />
-        <DeviceStats />
       </Container>
     </Providers>
   )

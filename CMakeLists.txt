@@ -2,14 +2,6 @@ cmake_minimum_required(VERSION 3.22.1)
 
 project(mems)
 
-# Add the path to the NDK includes
-# (Note: This isn't strictly necessary when using the Android toolchain file from the NDK, but it's added for clarity)
-# include_directories("${ANDROID_NDK}/sysroot/usr/include/")
-# set(NDK_ROOT ~/Library/Android/sdk/ndk/25.1.8937393)
-# Include the NDK headers
-# include_directories(${NDK_ROOT}/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/)
-# include_directories(${NDK_ROOT}/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/aarch64-linux-android/)
-
 include_directories(${CMAKE_HOME_DIRECTORY}/src/includes/)
 
 # List of source files

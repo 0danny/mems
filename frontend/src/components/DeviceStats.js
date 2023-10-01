@@ -26,9 +26,8 @@ const DeviceStats = () => {
   return (
     <div className="device-stats bg-secondary-subtle p-2 d-flex flex-row">
       <i
-        className={`bi-circle-fill me-2 ${
-          isConnected ? "text-success" : "text-danger"
-        }`}></i>
+        className={`bi-circle-fill me-2 ${isConnected ? "text-success" : "text-danger"
+          }`}></i>
       <span>Socket Status</span>
       <span>
         Mems Version: <b>{deviceInfo.version}</b>

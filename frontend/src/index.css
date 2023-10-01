@@ -18,11 +18,15 @@ html {
   height: 100%;
 }
 
-.content {
-  min-height: 0px;
-}
-
 thead tr th {
   position: sticky;
   top: -5px;
+}
+
+.tab-content > .active {
+  height: 100% !important;
+}
+
+.tab-content {
+  height: 100%;
 }

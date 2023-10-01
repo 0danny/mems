@@ -10,7 +10,7 @@ const MemViewer = () => {
 
 const Controls = () => {
   return (
-    <div class="p-3">
+    <div class="p-3" style={{height: "126px"}}>
       <div class="input-group mb-3">
         <input
           type="text"
@@ -42,7 +42,7 @@ const Controls = () => {
 
 const Results = () => {
   return (
-    <div className="overflow-auto" style={{ height: "100px" }}>
+    <div className="overflow-auto" style={{ height: "calc(100% - 126px)"}}>
       <table className="table table-striped table-hover border-top">
         <thead className="bg-secondary-subtle">
           <tr>
@@ -155,12 +155,7 @@ const Results = () => {
             <td>0xA1</td>
             <td>Some Value</td>
           </tr>
-          <tr>
-            <th scope="row">1</th>
-            <td>0x0001</td>
-            <td>0xA1</td>
-            <td>Some Value</td>
-          </tr>
+
         </tbody>
       </table>
     </div>
