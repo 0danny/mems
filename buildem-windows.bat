@@ -15,7 +15,8 @@ echo [React] Frontend built.
 REM Prepare emulator
 start emulator -avd Pixel -no-audio -gpu host -writable-system -no-snapshot-load -dns-server 8.8.8.8
 adb wait-for-device
-adb forward tcp:8000 tcp:8000
+
+REM adb forward tcp:8000 tcp:8000
 
 REM Move files to emulator
 cd build
@@ -24,10 +25,15 @@ adb push ./scanner /data/local/tmp/mems/
 adb push ../frontend/build /data/local/tmp/mems/
 echo [ADB] Files pushed into AVD.
 
+echo [ADB] Getting root access.
+adb root
+adb wait-for-device
+
 echo "cd /data/local/tmp/mems && chmod +x scanner && ./scanner"
 echo [ADB] Emulator booting up, running adb shell.
 adb shell
 
 REM Function to cleanup and exit emulator
 echo [Cleanup] Cleaning up and exiting emulator...
+adb emu kill
 exit /b

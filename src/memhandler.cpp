@@ -1,4 +1,4 @@
-#include "memory.h"
+#include "memhandler.h"
 #include "logger.h"
 #include <cstdlib>
 #include <cstring>
@@ -13,8 +13,11 @@
 #include <unistd.h> // For pread
 #include <vector>
 
-std::vector<memory::memoryRegion> memory::getMemoryRegions(pid_t pid)
-{
+memhandler::memhandler() {
+  logger::log("Constructing memhandler.");
+}
+
+std::vector<memhandler::memoryRegion> memhandler::getMemoryRegions(pid_t pid) {
   std::vector<memoryRegion> regions;
 
   std::stringstream ss;
@@ -24,10 +27,16 @@ std::vector<memory::memoryRegion> memory::getMemoryRegions(pid_t pid)
   std::string line;
   while (std::getline(maps, line)) {
     memoryRegion region;
+
     char perms[5]; // Permissions string: rwxp
+
     sscanf(line.c_str(), "%lx-%lx %4s", &region.start, &region.end, perms);
-    region.readable = perms[0] == 'r'; // Check if the region is readable
-    if (region.readable) {             // Only add readable regions
+
+    region.readable = perms[0] == 'r';
+    region.writable = perms[1] == 'w';
+    region.executable = perms[2] == 'x';
+
+    if (region.readable && region.writable) {
       regions.push_back(region);
     }
   }
@@ -35,9 +44,9 @@ std::vector<memory::memoryRegion> memory::getMemoryRegions(pid_t pid)
   return regions;
 }
 
-void memory::searchMemory(pid_t pid, int value)
-{
+std::vector<memhandler::memoryResult> memhandler::searchMemory(pid_t pid, int value) {
   std::vector<memoryRegion> regions = getMemoryRegions(pid);
+  std::vector<memoryResult> results;
 
   std::stringstream memPath;
   memPath << "/proc/" << pid << "/mem";
@@ -45,11 +54,8 @@ void memory::searchMemory(pid_t pid, int value)
 
   if (memFd == -1) {
     logger::log("Failed to open memory of process ", pid);
-    return;
+    return results;
   }
-
-  ptrace(PTRACE_ATTACH, pid, NULL, NULL);
-  wait(nullptr);
 
   int regionCount = 0;
 
@@ -78,28 +84,16 @@ void memory::searchMemory(pid_t pid, int value)
       if (data == value) {
         uintptr_t foundAddress = region.start + i;
 
-        // logger::log("Found value at address - ", foundAddress);
+        results.push_back({foundAddress, data});
       }
     }
+
+    logger::log("Finished searching region(s) ", regionCount, ", found ", results.size(), " results.");
 
     delete[] buffer; // free the memory for the current region
   }
 
   close(memFd);
-  ptrace(PTRACE_DETACH, pid, NULL, NULL);
+
+  return results;
 }
-
-/*
-int main(int argc, char* argv[]) {
-    if (argc != 3) {
-        std::cout << "Usage: scanner <pid> <value>" << std::endl;
-        return -1;
-    }
-
-    pid_t pid = std::atoi(argv[1]);
-    int value = std::atoi(argv[2]);
-
-    searchMemory(pid, value);
-
-    return 0;
-}*/

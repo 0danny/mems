@@ -24,6 +24,21 @@ const ProcHandler = () => {
   const { setSelectedProcess } = useContext(ProcessContext)
 
   useEffect(() => {
+
+    /* For debugging */
+    setProcesses([
+      { id: 1, name: "Test Process" },
+      { id: 2, name: "Test Process 2" },
+      { id: 3, name: "Test Process 3" },
+      { id: 4, name: "Test Process 4" },
+      { id: 5, name: "Test Process 5" },
+      { id: 6, name: "Test Process 6" },
+      { id: 7, name: "Test Process 7" },
+      { id: 8, name: "Test Process 8" },
+      { id: 9, name: "Test Process 9" },
+      { id: 10, name: "Test Process 10" },
+    ])
+
     const processCallback = (data) => {
       console.log("Received process data: ", data)
 
@@ -39,7 +54,7 @@ const ProcHandler = () => {
 
   return (
     <div className="d-flex flex-column h-100 p-2">
-      <span className="p-2 bg-secondary-subtle rounded">
+      <span className="p-2 bg-secondary-subtle rounded mb-3">
         Below all of the processes on the device are displayed.
         <br/><b>{processes.length}</b> processes have been fetched from the device.
       </span>
@@ -49,6 +64,7 @@ const ProcHandler = () => {
         .sort((a, b) => b.id - a.id) //Sort by highest PID first.
         .map((proc) => (
           <Process
+            key={proc.id}
             proc_id={proc.id}
             name={proc.name}
             onClick={() => handleProcessClick(proc.id, proc.name)}

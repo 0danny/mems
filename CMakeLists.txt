@@ -7,7 +7,7 @@ include_directories(${CMAKE_HOME_DIRECTORY}/src/includes/)
 # List of source files
 set(SOURCES 
     src/scanner.cpp
-    src/memory.cpp
+    src/memhandler.cpp
     src/prochandler.cpp
     src/syshandler.cpp
     ${CMAKE_HOME_DIRECTORY}/src/includes/mongoose/mongoose.c

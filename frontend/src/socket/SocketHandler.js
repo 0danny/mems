@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react"
+import React, { createContext, useEffect, useState, useRef } from "react"
 
 const SocketContext = createContext()
 
@@ -24,8 +24,6 @@ const notifySubscribers = (type, data) => {
 }
 
 const prepareData = (socket) => {
-  //Have the respective components take care of calling the
-  //type that they need. This works for now.
   socket.send(JSON.stringify({ type: "processes" }))
   socket.send(JSON.stringify({ type: "device-info" }))
 }
@@ -33,6 +31,7 @@ const prepareData = (socket) => {
 export const SocketProvider = ({ children }) => {
   const [error, setError] = useState(null)
   const [isConnected, setIsConnected] = useState(false)
+  const socketRef = useRef(null) // Use a ref to store the socket
 
   useEffect(() => {
     var server_url = `ws://${window.location.host}/websocket`
@@ -40,6 +39,8 @@ export const SocketProvider = ({ children }) => {
     console.log(`Connecting to websocket via: ${server_url}`)
 
     const socket = new WebSocket(server_url)
+
+    socketRef.current = socket
 
     socket.onopen = (event) => {
       console.log("Connected to websocket server.")
@@ -73,9 +74,15 @@ export const SocketProvider = ({ children }) => {
     }
   }, [])
 
+  const sendMessage = (message) => {
+    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+      socketRef.current.send(JSON.stringify(message))
+    }
+  }
+
   return (
     <SocketContext.Provider
-      value={{ error, isConnected, registerSubscriber, unregisterSubscriber }}>
+      value={{ error, isConnected, registerSubscriber, unregisterSubscriber, sendMessage }}>
       {children}
     </SocketContext.Provider>
   )

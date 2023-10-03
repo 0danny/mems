@@ -1,5 +1,6 @@
 #pragma once
 
+#include "memhandler.h"
 #include "prochandler.h"
 #include <mongoose/mongoose.h>
 #include <mutex>
@@ -16,6 +17,8 @@ private:
   struct mg_mgr mgr; // Event manager
 
   prochandler procHandler = prochandler();
+
+  memhandler memHandler = memhandler();
 
   std::map<std::string, std::function<void(nlohmann::json, struct mg_connection *c)>> messageHandlers;
 

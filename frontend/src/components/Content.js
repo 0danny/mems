@@ -11,29 +11,29 @@ const Content = (props) => {
 
 const TabContents = () => {
   return (
-    <div class="tab-content">
+    <div className="tab-content">
       <div
-        class="tab-pane fade show active"
+        className="tab-pane fade show active"
         id="scanner-tab-pane"
         role="tabpanel"
         aria-labelledby="scanner-tab"
-        tabindex="0">
+        tabIndex="0">
         <MemViewer />
       </div>
       <div
-        class="tab-pane fade"
+        className="tab-pane fade"
         id="processes-tab-pane"
         role="tabpanel"
         aria-labelledby="processes-tab"
-        tabindex="1">
+        tabIndex="1">
         <ProcHandler />
       </div>
       <div
-        class="tab-pane fade"
+        className="tab-pane fade"
         id="region-viewer-tab-pane"
         role="tabpanel"
         aria-labelledby="region-viewer-tab"
-        tabindex="2">
+        tabIndex="2">
         <span>Region Viewer Tab (WIP)</span>
       </div>
     </div>

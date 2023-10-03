@@ -25,7 +25,7 @@ if not exist "%CC%" (
     echo Error: C compiler binary not found.
 )
 
-:: Create build directory
+:: Delete build directory.
 if exist "build" (
     rmdir /s /q "build"
 )

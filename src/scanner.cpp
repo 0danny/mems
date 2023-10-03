@@ -1,5 +1,6 @@
 #include "scanner.h"
 #include "logger.h"
+#include "memhandler.h"
 #include "prochandler.h"
 #include "syshandler.h"
 #include <functional>
@@ -28,8 +29,8 @@ void scanner::run() {
 }
 
 void scanner::linkHandlers() {
+  // Handle processes message
   registerHandler("processes", [this](nlohmann::json j, mg_connection *c) {
-    // Handle the specific message here
     logger::log("Handling message of type {processes} from ", c->id);
 
     std::vector<prochandler::process> processes = procHandler.getRunningProcesses();
@@ -45,6 +46,30 @@ void scanner::linkHandlers() {
     mg_ws_send(c, serialized_message.c_str(), serialized_message.size(), WEBSOCKET_OP_TEXT);
   });
 
+  // Handle scan message
+  registerHandler("scan", [this](nlohmann::json j, mg_connection *c) {
+    // Run a scan given a pid, scan value and scan type
+    logger::log("Handling message of type {scan} from ", c->id);
+
+    int pid = j["data"]["processId"];
+    std::string value = j["data"]["value"];
+    std::string scanType = j["data"]["type"];
+
+    logger::log("Scanning process ", pid, " for value ", value, " with scan type ", scanType);
+
+    // Call memory::searchMemory method with value and pid.
+    std::vector<memhandler::memoryResult> results = memHandler.searchMemory(pid, stoi(value));
+
+    // Convert results list to json and send back.
+    nlohmann::json jsonObject = results;
+
+    // To a string:
+    std::string jsonString = jsonObject.dump();
+
+    mg_ws_send(c, jsonString.c_str(), jsonString.size(), WEBSOCKET_OP_TEXT);
+  });
+
+  // Handle device-info message
   registerHandler("device-info", [this](nlohmann::json j, mg_connection *c) {
     // Just some place holder stuff until I figure out what I want to put there.
 
@@ -89,6 +114,8 @@ void scanner::eventHandler(struct mg_connection *c, int ev, void *ev_data, void 
     scanner *scanRef = ((scanner *)fn_data);
 
     try {
+      logger::log(messageData);
+
       nlohmann::json j = nlohmann::json::parse(messageData);
 
       if (j.contains("type")) {

@@ -19,10 +19,10 @@ const NavigationBar = (props) => {
 
 const TabController = () => {
   return (
-    <ul class="nav nav-pills p-3" role="tablist">
-      <li class="nav-item" role="presentation">
+    <ul className="nav nav-pills p-3" role="tablist">
+      <li className="nav-item" role="presentation">
         <button
-          class="nav-link active"
+          className="nav-link active"
           id="scanner-tab"
           data-bs-toggle="tab"
           data-bs-target="#scanner-tab-pane"
@@ -33,9 +33,9 @@ const TabController = () => {
           Scanner
         </button>
       </li>
-      <li class="nav-item" role="presentation">
+      <li className="nav-item" role="presentation">
         <button
-          class="nav-link"
+          className="nav-link"
           id="processes-tab"
           data-bs-toggle="tab"
           data-bs-target="#processes-tab-pane"
@@ -46,9 +46,9 @@ const TabController = () => {
           Processes
         </button>
       </li>
-      <li class="nav-item" role="presentation">
+      <li className="nav-item" role="presentation">
         <button
-          class="nav-link"
+          className="nav-link"
           id="region-viewer-tab"
           data-bs-toggle="tab"
           data-bs-target="#region-viewer-tab-pane"
